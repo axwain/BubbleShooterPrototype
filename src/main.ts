@@ -4,7 +4,7 @@ import { Field } from './game/field'
 
 window.onload = () => {
   const width = 720
-    const height = 1280
+  const height = 1280
   const app = new PIXI.Application({ width, height })
 
   const container = document.getElementById('app')
