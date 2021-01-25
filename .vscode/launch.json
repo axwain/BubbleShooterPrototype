@@ -1,14 +1,22 @@
 {
   "version": "0.2.0",
   "configurations": [
-      {
-          "name": "Launch index.html",
-          "type": "firefox",
-          "request": "launch",
-          "reAttach": true,
-          "firefoxArgs": ["-private"],
-          "url": "http://localhost:1234/",
-          "webRoot": "${workspaceFolder}"
-      }
+    {
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "runtimeArgs": ["--incognito"],
+      "url": "http://localhost:1234",
+      "webRoot": "${workspaceFolder}/dist"
+    },
+    {
+        "name": "Launch Firefox",
+        "type": "firefox",
+        "request": "launch",
+        "reAttach": true,
+        "firefoxArgs": ["-private"],
+        "url": "http://localhost:1234/",
+        "webRoot": "${workspaceFolder}"
+    }
   ]
 }
