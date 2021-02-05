@@ -1,44 +1,54 @@
 import { Container } from 'pixi.js'
 import { StaticBubble } from './bubbles'
 
-const stage1: number[] = [
-  0, 0, 1, 1, 3, 3, 5, 5,
-  0, 1, 1, 3, 3, 5, 5,
-  3, 3, 5, 5, 0, 0, 1, 1,
-  3, 3, 5, 5, 0, 0, 1
-]
-const radius = 32
+export interface FieldConfiguration {
+  bubbleRadius: number
+  columns: number
+  rowHeight: number
+  rowShift: number
+  x: number
+  y: number
+}
 
 export class Field {
-  field: Container
+  private readonly _field: Container
+  private readonly _bubbleRadius: number
+  private readonly _columns: number
+  private readonly _rowHeight: number
+  private readonly _rowShift: number
 
-  constructor (stage: Container, x: number, y: number) {
-    this.field = new Container()
-    this.field.x = x
-    this.field.y = y
-    stage.addChild(this.field)
+  constructor (stage: Container, configuration: FieldConfiguration) {
+    this._field = new Container()
+    this._field.x = configuration.x
+    this._field.y = configuration.y
+    this._bubbleRadius = configuration.bubbleRadius
+    this._columns = configuration.columns
+    this._rowHeight = configuration.rowHeight
+    this._rowShift = configuration.rowShift
+
+    stage.addChild(this._field)
   }
 
-  fill (): void {
-    let x = radius
-    let y = radius
-    let isEven = true
+  setup (stage: number[], shifted = false): void {
+    let x = this._bubbleRadius
+    let y = this._bubbleRadius
+    let isShifted = shifted
     let count = 0
-    function maxOnRow (even: boolean): number {
-      return even ? 8 : 7
+    const maxOnRow = (shifted: boolean): number => {
+      return shifted ? this._columns - 1 : this._columns
     }
-    for (const colorIndex of stage1) {
-      const bubble = new StaticBubble(x, y, radius, colorIndex)
-      x += radius * 2
+    for (const colorIndex of stage) {
+      const bubble = new StaticBubble(x, y, this._bubbleRadius, colorIndex)
+      x += this._bubbleRadius * 2
       count++
-      if (count === maxOnRow(isEven)) {
-        isEven = !isEven
-        x = radius * (isEven ? 1 : 2)
-        y += radius * 2 - 8
+      if (count === maxOnRow(isShifted)) {
+        isShifted = !isShifted
+        x = this._rowShift * (isShifted ? 1 : 0) + this._bubbleRadius
+        y += this._rowHeight
         count = 0
       }
 
-      bubble.setContainer(this.field)
+      bubble.setContainer(this._field)
     }
   }
 }
