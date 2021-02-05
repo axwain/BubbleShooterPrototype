@@ -1,11 +1,11 @@
-import { Container, Graphics } from 'pixi.js'
+import { Container } from 'pixi.js'
+import { StaticBubble } from './bubbles'
 
-const colors: number[] = [0xffadad, 0xffd6a5, 0xfdffb6, 0xcaffbf, 0x9bf6ff, 0xa0c4ff, 0xa0c4ff, 0xffc6ff]
 const stage1: number[] = [
   0, 0, 1, 1, 3, 3, 5, 5,
-   0, 1, 1, 3, 3, 5, 5,
+  0, 1, 1, 3, 3, 5, 5,
   3, 3, 5, 5, 0, 0, 1, 1,
-   3, 3, 5, 5, 0, 0, 1
+  3, 3, 5, 5, 0, 0, 1
 ]
 const radius = 32
 
@@ -24,14 +24,11 @@ export class Field {
     let y = radius
     let isEven = true
     let count = 0
-    function maxOnRow (even: boolean) {
+    function maxOnRow (even: boolean): number {
       return even ? 8 : 7
     }
-    for(const color of stage1) {
-      const bubble = new Graphics()
-      bubble.beginFill(colors[color]).drawCircle(0, 0, radius).endFill()
-      bubble.x = x
-      bubble.y = y
+    for (const colorIndex of stage1) {
+      const bubble = new StaticBubble(x, y, radius, colorIndex)
       x += radius * 2
       count++
       if (count === maxOnRow(isEven)) {
@@ -41,7 +38,7 @@ export class Field {
         count = 0
       }
 
-      this.field.addChild(bubble)
+      bubble.setContainer(this.field)
     }
   }
 }
