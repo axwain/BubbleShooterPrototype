@@ -1,15 +1,17 @@
 {
   "compilerOptions": {
+      "allowJs": true,
+      "lib": [
+        "es2017",
+        "dom"
+      ],
       "module": "commonjs",
       "moduleResolution": "node",
       "outDir": "./lib/",
-      "target": "es5",
       "sourceMap": true,
-      "allowJs": true,
-      "lib": [
-          "es2017",
-          "dom"
-      ],
+      "strict": true,
+      "strictNullChecks": true,
+      "target": "es5",
       "types": [
           "jest"
       ],
