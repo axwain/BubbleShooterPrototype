@@ -41,6 +41,14 @@ export class Field {
     return this._bubbles.length
   }
 
+  isRowShifted (rowIndex: number): boolean {
+    if (rowIndex >= 0 && rowIndex < this.totalRows) {
+      return rowIndex % 2 === (this._startsShifted ? 0 : 1)
+    } else {
+      throw new RangeError('The specified Row Index is outside the valid range')
+    }
+  }
+
   maxColumns (isShifted: boolean): number {
     return isShifted ? this._columns - 1 : this._columns
   }
@@ -49,7 +57,7 @@ export class Field {
     if (y >= 0 && x >= 0 && x <= this._columns * this._bubbleRadius * 2) {
       const Row = Math.floor(y / this._rowHeight)
       if (Row < this.totalRows) {
-        const RowIsShifted = Row % 2 === (this._startsShifted ? 0 : 1)
+        const RowIsShifted = this.isRowShifted(Row)
         const ShiftPosition = RowIsShifted ? this._rowShift : 0
         const Column = Math.floor((x - ShiftPosition) / (this._bubbleRadius * 2))
 

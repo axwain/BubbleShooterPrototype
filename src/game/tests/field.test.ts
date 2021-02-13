@@ -37,6 +37,19 @@ describe('field', () => {
     expect(InputField.maxColumns(IsShifted)).toBe(ExpectedMaxColumnsWhenShifted)
   })
 
+  it('should have interleaved shifted rows', () => {
+    const InputField = GetField()
+    const FirstRowIndex = 0
+    const SecondRowIndex = 1
+    const ThirdRowIndex = 2
+    const FourthRowIndex = 3
+
+    expect(InputField.isRowShifted(FirstRowIndex)).toBeFalsy()
+    expect(InputField.isRowShifted(SecondRowIndex)).toBeTruthy()
+    expect(InputField.isRowShifted(ThirdRowIndex)).toBeFalsy()
+    expect(InputField.isRowShifted(FourthRowIndex)).toBeTruthy()
+  })
+
   describe('search bubble', () => {
     it('should not find any bubble index', () => {
       const InputField = GetField()
