@@ -49,12 +49,8 @@ export class Field {
     }
   }
 
-  maxColumns (isShifted: boolean): number {
-    return isShifted ? this._columns - 1 : this._columns
-  }
-
-  searchBubbleIndex (x: number, y: number): number[] {
-    if (y >= 0 && x >= 0 && x <= this._columns * this._bubbleRadius * 2) {
+  findBubbleIndex (x: number, y: number): number[] {
+    if (y >= 0 && x >= this._bubbleRadius && x <= this._columns * this._bubbleRadius * 2) {
       const Row = Math.floor(y / this._rowHeight)
       if (Row < this.totalRows) {
         const RowIsShifted = this.isRowShifted(Row)
@@ -68,6 +64,41 @@ export class Field {
     }
 
     return []
+  }
+
+  findNearbyBubbles (x: number, y: number): number[][] {
+    const BubbleIndex = this.findBubbleIndex(x, y)
+    const Result: number[][] = []
+    if (BubbleIndex.length > 0) {
+      const [Row, Column] = BubbleIndex
+      const IsShifted = this.isRowShifted(Row)
+      const MaxColumns = this.maxColumns(IsShifted)
+      const PrevMaxColumns = this.maxColumns(!IsShifted)
+      if (Row > 0) {
+        Result.push([Row - 1, Column])
+        if (Column > 0) {
+          Result.push([Row - 1, Column - 1])
+        }
+
+        if (Column < PrevMaxColumns - 1) {
+          Result.push([Row - 1, Column + 1])
+        }
+      }
+
+      if (Column > 0) {
+        Result.push([Row, Column - 1])
+      }
+
+      if (Column < MaxColumns - 1) {
+        Result.push([Row, Column + 1])
+      }
+    }
+
+    return Result
+  }
+
+  maxColumns (isShifted: boolean): number {
+    return isShifted ? this._columns - 1 : this._columns
   }
 
   setup (stage: number[], startsShifted = false): void {
