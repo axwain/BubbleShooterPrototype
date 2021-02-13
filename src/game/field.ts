@@ -18,7 +18,7 @@ export class Field {
   private readonly _rowHeight: number
   private readonly _rowShift: number
 
-  constructor (configuration: FieldConfiguration) {
+  constructor (configuration: FieldConfiguration, stage: number[], startsShifted = false) {
     this._field = new Container()
     this._field.x = configuration.x
     this._field.y = configuration.y
@@ -27,6 +27,8 @@ export class Field {
     this._columns = configuration.columns
     this._rowHeight = configuration.rowHeight
     this._rowShift = configuration.rowShift
+
+    this.setup(stage, startsShifted)
   }
 
   get container () {
@@ -37,15 +39,15 @@ export class Field {
     return this._bubbles.length
   }
 
-  setup (stage: number[], shifted = false): void {
+  maxColumns(isShifted: boolean): number {
+    return isShifted ? this._columns - 1 : this._columns
+  }
+
+  setup (stage: number[], startsShifted = false): void {
     let x = this._bubbleRadius
     let y = this._bubbleRadius
-    let isShifted = shifted
+    let isShifted = startsShifted
     let count = 0
-
-    const maxOnRow = (shifted: boolean): number => {
-      return shifted ? this._columns - 1 : this._columns
-    }
 
     this._bubbles.length = 0
     let currentRow: StaticBubble[] = []
@@ -54,7 +56,7 @@ export class Field {
       currentRow.push(bubble)
       x += this._bubbleRadius * 2
       count++
-      if (count === maxOnRow(isShifted)) {
+      if (count === this.maxColumns(isShifted)) {
         isShifted = !isShifted
         x = this._rowShift * (isShifted ? 1 : 0) + this._bubbleRadius
         y += this._rowHeight
