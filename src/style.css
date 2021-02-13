@@ -1,7 +1,7 @@
 * {
-  margin:0;
-  padding:0;
-  overflow:hidden;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 html {
@@ -17,5 +17,5 @@ body {
 }
 
 canvas {
-  display:block;
+  display: block;
 }

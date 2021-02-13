@@ -112,7 +112,7 @@ window.onload = () => {
     app.stage.addChild(circle)
     container.appendChild(app.view)
 
-    const playfield = new Field(app.stage, configuration)
-    playfield.setup(stage1)
+    const playfield = new Field(configuration, stage1)
+    app.stage.addChild(playfield.container)
   }
 }
