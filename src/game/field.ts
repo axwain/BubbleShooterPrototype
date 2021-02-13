@@ -18,7 +18,7 @@ export class Field {
   private readonly _rowHeight: number
   private readonly _rowShift: number
 
-  constructor (stage: Container, configuration: FieldConfiguration) {
+  constructor (configuration: FieldConfiguration) {
     this._field = new Container()
     this._field.x = configuration.x
     this._field.y = configuration.y
@@ -27,8 +27,14 @@ export class Field {
     this._columns = configuration.columns
     this._rowHeight = configuration.rowHeight
     this._rowShift = configuration.rowShift
+  }
 
-    stage.addChild(this._field)
+  get container () {
+    return this._field
+  }
+
+  get totalRows () {
+    return this._bubbles.length
   }
 
   setup (stage: number[], shifted = false): void {
